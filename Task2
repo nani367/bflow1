@@ -1,0 +1,72 @@
+# Task 2
+def checksubs(A,B):
+    # if length of A is less than B
+    # return False
+    if len(A)<len(B):
+        return False
+    i = 0   # current index in A
+    j = 0   # current index in B
+    # iterate through A
+    while i<len(A):
+        # if the element at indices are same
+        # increment j(nmatch next element)
+        if A[i] == B[j]:
+            j += 1
+            if j == len(B):   # all characters are matched
+                break
+        i += 1
+    return j == len(B)
+
+# take input
+A = list(map(int,input("Array to check:").split(",")))
+B = list(map(int,input("Sequence to check if is subsequence of the array:").split(",")))
+print(checksubs(A,B))
+
+
+# the function below can be modified to include adjacent logic
+
+def checksubs(A, B, adjacent=False):
+    # if length of A is less than B
+    # return False
+    if len(A) < len(B):
+        return False
+    i = 0  # current index in A
+    j = 0  # current index in B
+    # iterate through A
+    if not adjacent:
+        while i < len(A):
+            # if the element at indices are same
+            # increment j(nmatch next element)
+            if A[i] == B[j]:
+                j += 1
+                if j == len(B):  # all characters are matched
+                    return True
+            i += 1
+        return False
+    # for logic of adjacent
+    else:
+        i = 0
+        # iterate through array
+        while i < len(A):
+            # check if first character matches
+            if A[i] == B[0]:
+                j = 0
+                # compare B with A's subarray
+                # starting at i
+                while j < len(B) and i + j < len(A):
+                    if A[i + j] != B[j]:
+                        break
+                    j += 1
+                if j == len(B):
+                    return True
+            i += 1
+        return False
+
+
+# take input
+A = list( map(int, input( "Array to check:").split(",")))
+B = input("Sequence to check if is subsequence of the array:").split(",")
+if B[-1] == 'adjacent':
+    print(checksubs(A, list(map(int, B[:len(B) - 1])), True))
+else:
+    print(checksubs(A, B))
