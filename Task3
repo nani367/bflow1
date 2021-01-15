@@ -1,0 +1,117 @@
+# method to count number of purple neighbours around a cell
+
+def countPurpleNeighbours(b, xpos, ypos, xbound, ybound):
+    purple = 0
+
+    for newx in range(xpos - 1, xpos + 2 ):
+
+        for newy in range(ypos - 1, ypos + 2 ):
+
+            # if neighbour is outside board, skip that
+
+            if (newx < 0 or newy < 0 or newx >= xbound or newy >= ybound):
+                continue
+
+            # skip if cell itself is encountered
+
+            if (newx == xpos and newy == ypos):
+                continue
+
+            # else if neighbour is purple, increment counter
+
+            if (b[newx][newy] == 1):
+                purple += 1
+
+    return purple
+
+
+def main():
+    # take appropriate inputs
+
+    sizes = input()
+
+    (xsize, ysize) = (int( sizes.split(',')[0] ), int( sizes.split(',' )[1] ))
+
+    # board is original board, intermediate is a temporary list
+
+    board = []
+
+    intermediate = []
+
+    for i in range(xsize):
+
+        temp = []
+
+        t = []
+
+        inp = input()
+
+        for j in range(ysize):
+            temp.append(int(inp[j]))
+
+            t.append(0)
+
+        intermediate.append(t)
+
+        board.append(temp)
+
+    fin = input()
+
+    (targetX, targetY, turns) = (int( fin.split(',')[0]), int(fin.split(',')[1]), int(fin.split(',')[2]))
+
+    # counter to count number of generations target cell remains purple
+
+    purpleGeneration = 0
+
+    for generation in range( turns + 1 ):
+
+        # if target cell is purple in this generation, increase counter
+
+        if (board[targetX][targetY] == 1):
+            purpleGeneration += 1
+
+        # update value of every cell
+
+        for x in range( xsize ):
+
+            for y in range( ysize ):
+
+                # get number of purple neighbours for current cell
+
+                pneigh = countPurpleNeighbours( board, x, y, xsize, ysize )
+
+                # if cell is brown
+
+                if (board[x][y] == 0):
+
+                    # if condition satisfied, turn it to purple
+
+                    if (pneigh == 3 or pneigh == 6):
+
+                        intermediate[x][y] = 1
+
+                    else:
+
+                        intermediate[x][y] = 0
+
+
+
+                # similarly with purple
+
+                else:
+
+                    if (pneigh in [0, 1, 4, 5, 7, 8]):
+
+                        intermediate[x][y] = 0
+
+                    else:
+
+                        intermediate[x][y] = 1
+
+        # copy new cell values to original board
+
+        board = [x[:] for x in intermediate]
+
+    # display output
+
+    print(purpleGeneration)
