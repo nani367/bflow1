@@ -1,0 +1,19 @@
+# For the  problem we can solve it simply by using for loops and if else statements
+# first we ask the user to input a string
+# then we put the string in the for loop
+
+
+string = str(input()).lower()  # taking a string input from the user and changing all letters in lowercase
+
+# Counts each character present in the string
+for i in range( 0, len( string ) ):  # initiating a for loop
+    c = 1;
+    for j in range( i + 1, len( string ) ):  # creating nested for loop
+        if (string[i] == string[j] and string[i] != ' '):
+            c = c + 1;
+            # Set string[j] to 0 to avoid printing visited character
+            string = string[:j] + '0' + string[j + 1:];
+
+            # A character is considered as duplicate if count is greater than 1
+    if (c > 1 and string[i] != '0'):
+        print(f'"{string[i]}" occurs {c} times')  # printing the result using fstring
